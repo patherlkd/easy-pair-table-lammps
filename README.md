@@ -3,7 +3,9 @@ A relatively simple python tool to create any pair potential to use with the LAM
 
 This tool does not require you to specify the force! It computes it automatically from the pair function using automatic differentiation.
 
-The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees. A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
+The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees (see below from the Lennard Jones (LJ) make_pairstyle_example_LJ.py example). A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
+
+![Plot](test_LJ_plot.png?raw=true "Title")
 
 This tool is currently limited to style = linear (r). But can be easily extended to style = spline (and RSQ or BITMAP) through minor edits to create_lammps_pairstyle_table.py (This will happen in a future version).
 
