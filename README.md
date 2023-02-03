@@ -10,10 +10,14 @@ This tool is currently limited to style = linear (r). But can be easily extended
 ## Dependencies:
 Linux, python3
 ### Python packages
-autograd  info: https://autograd.readthedocs.io/en/latest/introduction.html pip: https://pypi.org/project/autograd/
-numpy https://numpy.org/
-scipy https://scipy.org/
-matplotlib (with pdf backend - which it should come with automatically) https://matplotlib.org/
+* autograd  info: https://autograd.readthedocs.io/en/latest/introduction.html pip: https://pypi.org/project/autograd/
+
+* numpy https://numpy.org/
+
+* scipy https://scipy.org/
+
+* matplotlib (with pdf backend - which it should come with automatically) https://matplotlib.org/
+
 ### LAMMPS
 You need a lammps executable (you can specify this in the code)
 
