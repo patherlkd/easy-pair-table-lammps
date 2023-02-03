@@ -40,7 +40,7 @@ pair_keyword = "TEST_LJ"
 clpt.make_table_for_lammps(pair_filename,pair_keyword,pair_LJ, 0.5, 5.0, 1000, eps, sigma, rc)
 
 # put the table through lammps and check it
-lmps_input_filename = "./in.test_file_pair_LJ"
+lmps_input_filename = "./in.test_file_pair_LJ" # This doesn't need to exist, the code will create the appropriate input file to test the potential!
 lmps_pair_filename = "./test_file_pair_LJ_lmps.txt"
 lmps_executing_command = "/clusternfs/ldavis/lammps/lammps-29Sep2021/src/lmp_serial -i" # change this for your system
 
