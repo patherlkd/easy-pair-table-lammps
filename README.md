@@ -1,4 +1,4 @@
-# easy-pair-table-lammps
+# easy-pair-table-lammps (Currently version-v1)
 A relatively simple python tool to create any pair potential to use with the LAMMPS pair_style table option https://docs.lammps.org/pair_table.html, and provides an automatic check against the pair_write output.
 
 This tool does not require you to specify the force! It computes it automatically from the pair function using automatic differentiation.
