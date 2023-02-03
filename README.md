@@ -7,7 +7,7 @@ The automatic check involves automatically running LAMMPS with pair_write and pl
 
 ![Plot](test_LJ_plot.png?raw=true "Title")
 
-This tool is currently limited to style = linear (r). But can be easily extended to style = spline (and RSQ or BITMAP) through minor edits to create_lammps_pairstyle_table.py (This will happen in a future version).
+This tool is currently has been tested with style = linear and spline. Other options (RSQ and BITMAP etc.) can be introduced through minor edits to create_lammps_pairstyle_table.py.
 
 ## Dependencies:
 Linux, python3
