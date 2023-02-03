@@ -74,12 +74,13 @@ def make_table_for_lammps(filename,pair_keyword,pair,rmin,rmax,N,*args):
 
 def pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_command
                       ,pair_filename, pair_keyword
-                      ,units_string,rmin,rmax,N,Nlmps,rc):
+                      ,units_string,rmin,rmax,N,Nlmps,rc,style='linear'):
     lmpin = open("./in.pair_write_generic",'r')
     lmps_comms = lmpin.read()
     lmpin.close()
 
     lmps_comms = lmps_comms.replace("UNITS",units_string)
+    lmps_comms = lmps_comms.replace("STYLE",style)
     lmps_comms = lmps_comms.replace("NPOINTS",str(N))
     lmps_comms = lmps_comms.replace("FILE",pair_filename)
     lmps_comms = lmps_comms.replace("KEYWORD",pair_keyword)
