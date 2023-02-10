@@ -37,7 +37,7 @@ rdelta = (rmax-rmin)/float(N);
 # make the table
 pair_filename = "./test_file_pair_LJ.txt"
 pair_keyword = "TEST_LJ"
-clpt.make_table_for_lammps(pair_filename,pair_keyword,pair_LJ, 0.5, 5.0, 1000, eps, sigma, rc)
+clpt.make_table_for_lammps(pair_filename,pair_keyword,pair_LJ, rmin, rmax, N, eps, sigma, rc)
 
 # put the table through lammps and check it
 lmps_input_filename = "./in.test_file_pair_LJ"
@@ -51,6 +51,8 @@ clpt.pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_com
                        ,units_string,rmin,rmax,N+1,Nlmps,rc,style='spline')
 
 # Compare the data in files visually
-clpt.comparison("test_pair_LJ",lmps_pair_filename,pair_filename,rmin,rmax,rdelta,-10,100,-10,100,plot=True) 
+energy_ylims = [-10,100] # ylims for the plots
+force_ylims = [-10,100]
+clpt.comparison("test_pair_LJ",lmps_pair_filename,pair_filename,rmin,rmax,rdelta,energy_ylims[0],energy_ylims[1],force_ylims[0],force_ylims[1],plot=True) 
 
 # [ for the above clpt.comparison()] turn plot=True to plot=False to only output file for relative differences between lammps and your original table. In the above test_pair_LJ_rel_differences.txt contains all the numrical difference data and test_pair_LJ.pdf is the plot of the potentials and forces. So the first argument is <some-string> which will make <some-string>_rel_differences.txt and <some-string>.pdf
