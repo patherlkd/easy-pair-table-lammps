@@ -27,9 +27,11 @@ You need a lammps executable (you can specify this in the code)
 
 1. Specify functional form of potential in potentials_for_lammps.py (see examples in there for guidance). Just requires the pair-wise distance r to be the first argument. You can add an arbitrary number of other arguments.
 2. Create a make_pairstyle.py code (copy and edit from make_pairstyle_example_LJ.py).
-3. Run the make_pairstyle code `python3 make_pairstyle.py`.
-4. Check plot (if plot=True is on) and/or the relative differences data to see if the potential will work in lammps.
-5. Run your simulations!
+3. Ensure the path to the lammps executable in the make_pairstyle.py code is correct for your system!
+4. Run the make_pairstyle code `python3 make_pairstyle.py`.
+5. Check plot (if plot=True is on) and/or the relative differences data to see if the potential will work - as expected - in lammps.
+6. Copy the pair_style table and pair_coeff commands from the generated pair_write lammps input script into your actual simulation input scripts.
+7. Run your simulations!
 
 ### Look at the make_pairstyle_example_LJ.py
 
