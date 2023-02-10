@@ -94,8 +94,7 @@ def pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_comm
     lmpout.write(lmps_comms)
     lmpout.close()
     if os.path.exists(lmps_pair_filename):
-        os.system("rm "+lmps_pair_filename+" && "+lmps_executing_command+" "+lmps_input_filename+" > lmps_pair_write_from_create_lammps_pairstyle_table.log") # Let's\
- use os.system() because reasons...                                                                                                                                   
+        os.system("rm "+lmps_pair_filename+" && "+lmps_executing_command+" "+lmps_input_filename+" > lmps_pair_write_from_create_lammps_pairstyle_table.log") # Let's\use os.system() because reasons...                                                                                                                                   
     else:
         os.system(lmps_executing_command+" "+lmps_input_filename+" > lmps_pair_write_from_create_lammps_pairstyle_table.log")
     
