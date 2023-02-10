@@ -9,6 +9,10 @@ The automatic check involves automatically running LAMMPS with pair_write and pl
 
 This tool is currently has been tested with style = linear and spline. Other options (RSQ and BITMAP etc.) can be introduced through minor edits to create_lammps_pairstyle_table.py.
 
+## How to contribute?
+
+If you have used this tool and want to add your potential, then send  the python code for such a potential along with the potential and force test plots to luke.davis@ucl.ac.uk. Then I will add it to the potentials_for_lammps.py.
+
 ## Dependencies:
 Linux, python3
 ### Python packages
