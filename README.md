@@ -17,9 +17,7 @@ This tool has been tested with style = linear and spline. Other options (RSQ and
 
 ## How to contribute?
 
-* Suggest a pair_potential to add into the potentials_for_lammps.py
-
-* If you have used this tool and want to add your potential, then send  the python code for such a potential along with the potential and force test plots to luke.davis@ucl.ac.uk. Then I will add it to the potentials_for_lammps.py.
+* If you have used this tool and want to add your potential, then send  the python code for such a potential along with the make_<your-potential>.py code and potential and force test plots to luke.davis@ucl.ac.uk. Then I will add it to the potentials_for_lammps.py. Please keep to the style of naming your pair potential function pair_<name>.
 
 * Possible extensions I or you could work on: (1) numerically optimizing table parameters (N points e.g.) through checking against the relative difference data. (2) Automatically implement shifting and truncation to ensure continuity of the force for your pairstyle.
 
