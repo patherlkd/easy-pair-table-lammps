@@ -1,10 +1,9 @@
-# easy-pair-table-lammps (Currently version-v1)
+# easy-pair-table-lammps (Currently version-v2)
 A relatively simple python tool to create any pair potential to use with the LAMMPS pair_style table option https://docs.lammps.org/pair_table.html, and provides an automatic check against the pair_write output.
 
 Benefits:
 
     * One only needs to define a pair function. The force is computed automatically through automatic differentiation.
-    
     * It (the code) automatically makes a plot that compares the original table, with what LAMMPS sees through pair_write.
     * It generates a table containing the relative differences between the original table of energies and forces against pair_write.
     * Users can then simply copy commands from the -- automatically generated -- pair_write input script into their simulation script.
@@ -12,7 +11,7 @@ Benefits:
 
 The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees (see below from the Lennard Jones (LJ) make_pairstyle_example_LJ.py example). A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
 
-![Plot](test_LJ_plot.png?raw=true "Title")
+![Plot](Examples.png?raw=true "Title")
 
 This tool is currently has been tested with style = linear and spline. Other options (RSQ and BITMAP etc.) can be introduced through minor edits to create_lammps_pairstyle_table.py.
 
