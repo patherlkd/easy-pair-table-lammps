@@ -9,13 +9,15 @@ Benefits:
     * Users can then simply copy commands from the -- automatically generated -- pair_write input script into their simulation script.
 
 
-The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees (see below from the Lennard Jones (LJ) make_pairstyle_example_LJ.py example). A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
+The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees (see below for examples). A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
 
 ![Plot](Examples.png?raw=true "Title")
 
-This tool is currently has been tested with style = linear and spline. Other options (RSQ and BITMAP etc.) can be introduced through minor edits to create_lammps_pairstyle_table.py.
+This tool has been tested with style = linear and spline. Other options (RSQ and BITMAP etc.) can be introduced through minor edits to create_lammps_pairstyle_table.py.
 
 ## How to contribute?
+
+* Suggest a pair_potential to add into the potentials_for_lammps.py
 
 * If you have used this tool and want to add your potential, then send  the python code for such a potential along with the potential and force test plots to luke.davis@ucl.ac.uk. Then I will add it to the potentials_for_lammps.py.
 
@@ -38,7 +40,7 @@ You need a lammps executable (you can specify this in the code)
 ## Main steps
 
 1. Specify functional form of potential in potentials_for_lammps.py (see examples in there for guidance). Just requires the pair-wise distance r to be the first argument. You can add an arbitrary number of other arguments.
-2. Create a make_pairstyle.py code (copy and edit from make_pairstyle_example_LJ.py).
+2. Create a make_pairstyle.py code (copy and edit from make_pairstyle_example_LJ.py for example).
 3. Ensure the path to the lammps executable in the make_pairstyle.py code is correct for your system!
 4. Run the make_pairstyle code `python3 make_pairstyle.py`.
 5. Check plot (if plot=True is on) and/or the relative differences data to see if the potential will work - as expected - in lammps.
@@ -47,7 +49,7 @@ You need a lammps executable (you can specify this in the code)
 
 ### Look at the make_pairstyle_example_LJ.py
 
-This example code is basic and if you understand how it works you can then do what you want.
+This example code is basic and if you understand how it works you can then do what you want. Note that the LJ potential in this example is not shifted or truncated.
 
 ## You can get sophisticated!
 
