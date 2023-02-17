@@ -9,9 +9,7 @@ Benefits:
     * Users can then simply copy commands from the -- automatically generated -- pair_write input script into their simulation script.
 
 
-The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees (see below for examples). A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
-
-![Plot](Examples.png?raw=true "Title")
+The automatic check involves automatically running LAMMPS with pair_write and plotting a comparison of your original table (of potential energy and force) against what LAMMPS sees (see below for results of the examples). A text file containing the relative differences is generated (again automatically), helping you to gain a numerical estimate on reliability.
 
 This tool has been tested with style = linear and spline. Other options (RSQ and BITMAP etc.) can be introduced through minor edits to create_lammps_pairstyle_table.py.
 
@@ -52,3 +50,7 @@ This example code is basic and if you understand how it works you can then do wh
 ## You can get sophisticated!
 
 Note you can specify rather involved potentials, and aslong as you use numpy functions etc. the force can be gotten automatically.
+
+# Examples
+
+![Plot](Examples.png?raw=true "Title")
