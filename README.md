@@ -49,6 +49,6 @@ This example code is basic and if you understand how it works you can then do wh
 
 Note you can specify rather involved potentials, and aslong as you use numpy functions etc. the force can be gotten automatically.
 
-# Examples
+# Example WCA potential
 
-![Plot](Examples.png?raw=true "Title")
+![Plot](Example_pair_WCA.png?raw=true "Title")
