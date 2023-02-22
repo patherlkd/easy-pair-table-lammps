@@ -31,7 +31,7 @@ Linux, python3
 * For the make_many_pairstyle_pair_rep_coh_smooth_linear_MPI.py example you need mpi4py https://mpi4py.readthedocs.io/en/stable/
 
 ### LAMMPS
-You need a lammps executable (you can specify this in the code)
+You need a lammps executable (you can specify the exact path to this in your make_pairstyle.py code (see the other make<...>.py examples)).
 
 ## Main steps
 
