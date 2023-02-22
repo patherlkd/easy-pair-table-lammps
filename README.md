@@ -28,6 +28,8 @@ Linux, python3
 
 * matplotlib (with pdf backend - which it should come with automatically) https://matplotlib.org/
 
+* For the make_many_pairstyle_pair_rep_coh_smooth_linear_MPI.py example you need mpi4py https://mpi4py.readthedocs.io/en/stable/
+
 ### LAMMPS
 You need a lammps executable (you can specify this in the code)
 
