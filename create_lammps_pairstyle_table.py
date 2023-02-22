@@ -55,7 +55,10 @@ from potentials_for_lammps import pair_debug # simple Lennard-Jones example
 from potentials_for_lammps import pair_LJ # simple Lennard-Jones example
 warnings.simplefilter('ignore')
 
-MY_VERSION = "v2"
+MY_VERSION = "v2.1"
+
+def print_version():
+    print("EASY-PAIR-TABLE-LAMMPS version_"+MY_VERSION)
 
 def make_table_for_lammps(filename,pair_keyword,pair,rmin,rmax,N,rctab,*args):
     
@@ -70,17 +73,17 @@ def make_table_for_lammps(filename,pair_keyword,pair,rmin,rmax,N,rctab,*args):
             
             #file.write(str(n)+' '+str(r)+' '+str(np.around(pair(r,*args),3))+' '+str(np.around(force(partial(pair),r,*args),3))+'\n')
             
-            file.write(str(n)+' '+str(r)+' '+str(np.around(pair(r,*args),3))+' '+str(np.around(force(partial(pair),r,*args),3))+'\n')
+            file.write(str(n)+' '+str(r)+' '+str(np.around(pair(r,*args),7))+' '+str(np.around(force(partial(pair),r,*args),7))+'\n')
             
             #    file.write(str(n)+' '+str(r)+' '+str(0.0)+' '+str(0.0)+'\n')
             n+=1
             r+=rdelta
 
 
-def pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_command
+def pair_write_lammps(lmps_pair_write_generic_filename,lmps_input_filename,lmps_pair_filename,lmps_executing_command
                       ,pair_filename, pair_keyword
                       ,units_string,rmin,rmax,N,Nlmps,rc,style='linear'):
-    lmpin = open("./in.pair_write_generic",'r')
+    lmpin = open(lmps_pair_write_generic_filename,'r')
     lmps_comms = lmpin.read()
     lmpin.close()
 
@@ -95,7 +98,7 @@ def pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_comm
     lmps_comms = lmps_comms.replace("RMAX",str(rmax))
     lmps_comms = lmps_comms.replace("PWFIL",lmps_pair_filename)
 
-    lmpout = open("./"+lmps_input_filename,'w')
+    lmpout = open(lmps_input_filename,'w')
     lmpout.write(lmps_comms)
     lmpout.close()
     if os.path.exists(lmps_pair_filename):
@@ -105,7 +108,7 @@ def pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_comm
     
 
 
-def comparison(file_basename,lmps_pair_filename,pair_filename,xmin,xmax,deltax,y1min,y1max,y2min,y2max,plot=True,markers=True):
+def comparison(filename_with_path,lmps_pair_filename,pair_filename,xmin,xmax,deltax,y1min,y1max,y2min,y2max,plot=True,markers=True):
     
     lmpsdata = np.genfromtxt(lmps_pair_filename,skip_header=6)
     OGdata = np.genfromtxt(pair_filename,skip_header=5)
@@ -126,18 +129,7 @@ def comparison(file_basename,lmps_pair_filename,pair_filename,xmin,xmax,deltax,y
     
     lenN = len(forceOG) # this will be the same as the others, so arbitrarily chosen
 
-    #interpolations
-    #pairlmps_func = interpolate.interp1d(rlmps,pairlmps)
-    #forcelmps_func = interpolate.interp1d(rlmps,forcelmps)
-
-    #pairOG_func = interpolate.interp1d(rOG,pairOG)
-    #forceOG_func = interpolate.interp1d(rOG,forceOG)
-    
-    # create new r data for them to share and we can then compare their values for the same r
-    #xlist = np.arange(xmin,xmax,deltax)
-    #xlist = np.delete(xlist,-1)
-    # save differences to a file
-    with open("./"+file_basename+"_rel_differences.txt",'w') as out:
+    with open(filename_with_path+"_rel_differences.txt",'w') as out:
         
         for n in range(0,lenN):
             
@@ -186,4 +178,4 @@ def comparison(file_basename,lmps_pair_filename,pair_filename,xmin,xmax,deltax,y
         axs[1].legend(loc='upper right',fontsize=20,markerscale=2.0,frameon=False)
         
         fig.tight_layout(pad=2.0)
-        plt.savefig("./"+file_basename+".pdf")
+        plt.savefig(filename_with_path+".pdf")

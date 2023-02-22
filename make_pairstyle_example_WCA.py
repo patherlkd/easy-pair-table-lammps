@@ -24,11 +24,13 @@ import create_lammps_pairstyle_table as clpt # functions to create and test tabu
 
 
 # add your pairstyles in potentials_for_lammps.py and import it like below :)
-
 from potentials_for_lammps import pair_WCA
 warnings.simplefilter('ignore')
 
+clpt.print_version()
 
+folderToUse = "./"
+os.system("mkdir -p "+folderToUse)
 
 # lammps units
 units_string = "lj"
@@ -56,15 +58,15 @@ for r in rlist:
             rctab = r
 
 # make the table
-
-pair_filename = "./Example_pair_WCA.txt"
+pair_filename = folderToUse+"Example_pair_WCA.txt"
 pair_keyword = "WCA"
 clpt.make_table_for_lammps(pair_filename,pair_keyword,pair_WCA, rmin, rmax, N,rctab,eps,sigma,rc)
 
 
 # put the table through lammps and check it
-lmps_input_filename = "./in.Example_lmps_pair_WCA"
-lmps_pair_filename = "./Example_lmps_pair_WCA.txt"
+lmps_pair_write_generic_filename = "./in.pair_write_generic" 
+lmps_input_filename = folderToUse+"in.Example_lmps_pair_WCA"
+lmps_pair_filename = folderToUse+"Example_lmps_pair_WCA.txt"
 lmps_executing_command = "/clusternfs/ldavis/lammps/lammps-29Sep2021/src/lmp_serial -i" # change so it points to your lammps exe
 
 
@@ -73,7 +75,7 @@ lmps_executing_command = "/clusternfs/ldavis/lammps/lammps-29Sep2021/src/lmp_ser
 # get lammps to pair_write the potential energy and force for comparison
 
 Nlmps = N
-clpt.pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_command
+clpt.pair_write_lammps(lmps_pair_write_generic_filename,lmps_input_filename,lmps_pair_filename,lmps_executing_command
 
                        ,pair_filename, pair_keyword
 
@@ -83,7 +85,12 @@ clpt.pair_write_lammps(lmps_input_filename,lmps_pair_filename,lmps_executing_com
 
 # Compare the data in files visually
 
-clpt.comparison("Example_pair_WCA",lmps_pair_filename,pair_filename,rmin,rmax,rdelta,-2,20,-2,20,plot=True,markers=False) 
+pairmin = -1
+pairmax = 20
+forcemin = -5
+forcemax = 20
+
+clpt.comparison(folderToUse+"Example_pair_WCA",lmps_pair_filename,pair_filename,rmin,rmax,rdelta,pairmin,pairmax,forcemin,forcemax,plot=True,markers=False) 
 
 
 

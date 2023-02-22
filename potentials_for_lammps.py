@@ -117,11 +117,13 @@ def ELJrepulsion(r, epr, epc, sigma, rc):
 
 
 def pair_rep_coh(r,epr,epc,sigma,rc,rctab):
-    
+
     if r <= rc:
         return ELJcohesion(r,epc, sigma, rc) + ELJrepulsion(r,epr, epc, sigma, rc)
     else:
         return 0.0
+
+
 
 # Version which is shifted and continuous at the tabulated cut-off
 def pair_rep_coh_smooth_linear(r,epr,epc,sigma,rc,rctab):
@@ -130,3 +132,10 @@ def pair_rep_coh_smooth_linear(r,epr,epc,sigma,rc,rctab):
         return pair_rep_coh(r,epr,epc,sigma,rc,rctab) - pair_rep_coh(rctab,epr,epc,sigma,rc,rctab) + (r-rctab)*fend
     else:
         return 0.0
+    
+            
+
+# Version which is smooth and scaled by a
+def pair_rep_coh_smooth_linear_scaled(r,a,epr,epc,sigma,rc,rctab):
+    return a*pair_rep_coh_smooth_linear(r,epr,epc,sigma,rc,rctab)
+    
