@@ -1,4 +1,4 @@
-# easy-pair-table-lammps (Currently version-v2)
+# easy-pair-table-lammps (Currently version-v2.1)
 A relatively simple python tool to create any pair potential to use with the LAMMPS pair_style table option https://docs.lammps.org/pair_table.html, and provides an automatic check against the pair_write output.
 
 Benefits:
@@ -34,20 +34,20 @@ You need a lammps executable (you can specify this in the code)
 ## Main steps
 
 1. Specify functional form of potential in potentials_for_lammps.py (see examples in there for guidance). Just requires the pair-wise distance r to be the first argument. You can add an arbitrary number of other arguments.
-2. Create a make_pairstyle.py code (copy and edit from make_pairstyle_example_LJ.py for example).
+2. Create a make_pairstyle.py code (copy and edit from make_pairstyle_example_WCA.py for example).
 3. Ensure the path to the lammps executable in the make_pairstyle.py code is correct for your system!
 4. Run the make_pairstyle code `python3 make_pairstyle.py`.
 5. Check plot (if plot=True is on) and/or the relative differences data to see if the potential will work - as expected - in lammps.
 6. Copy the pair_style table and pair_coeff commands from the generated pair_write lammps input script into your actual simulation input scripts.
 7. Run your simulations!
 
-### Look at the make_pairstyle_example_LJ.py
+### Look at the make_pairstyle_example_WCA.py
 
-This example code is basic and if you understand how it works you can then do what you want. Note that the LJ potential in this example is not shifted or truncated.
+This example code is basic and if you understand how it works you can then do what you want.
 
 ## You can get sophisticated!
 
-Note you can specify rather involved potentials, and aslong as you use numpy functions etc. the force can be gotten automatically.
+Note you can specify rather involved potentials, and aslong as you use numpy functions etc. the force can be gotten automatically. You can also look at make_many_pairstyle_pair_rep_coh_smooth_linear_MPI.py for a more involved example which computes many pair tables using the Message Passing Interface (MPI).
 
 # Example WCA potential
 
