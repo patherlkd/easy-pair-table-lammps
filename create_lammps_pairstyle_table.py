@@ -55,25 +55,34 @@ from potentials_for_lammps import pair_debug # simple Lennard-Jones example
 from potentials_for_lammps import pair_LJ # simple Lennard-Jones example
 warnings.simplefilter('ignore')
 
-MY_VERSION = "v2.1"
+MY_VERSION = "v2.2"
 
 def print_version():
     print("EASY-PAIR-TABLE-LAMMPS version_"+MY_VERSION)
 
-def make_table_for_lammps(filename,pair_keyword,pair,rmin,rmax,N,rctab,*args):
+def make_table_for_lammps(filename,pair_keyword,pair,rmin,rmax,N,rctab,*args,mode=0):
     
-    rdelta = (rmax-rmin)/float(N) 
+
     with open(filename,'w') as file:
         file.write("# Created by [create_lammps_pairstyle_table.py version-"+MY_VERSION+"]\n\n")
         file.write(pair_keyword+"\n")
-        file.write("N "+str(N)+" R "+str(rmin)+" "+str(rmax)+"\n\n")
+        if mode==0: # basic, use dist values as is
+            file.write("N "+str(N)+"\n\n")
+        if mode==1: # use 'R' mode
+            file.write("N "+str(N)+" R "+str(rmin)+" "+str(rmax)+"\n\n")
+        if mode==2: # use 'RSQ' mode
+            file.write("N "+str(N)+" RSQ "+str(rmin)+" "+str(rmax)+"\n\n")
         n = 1
         r = rmin
+        rdelta = (rmax-rmin)/float(N) 
+        if mode==2:
+            r= rmin**2.0
+            rdelta = (rmax**2.0-rmin**2.0)/float(N) 
         while n <= N:
             
             #file.write(str(n)+' '+str(r)+' '+str(np.around(pair(r,*args),3))+' '+str(np.around(force(partial(pair),r,*args),3))+'\n')
-            
-            file.write(str(n)+' '+str(r)+' '+str(np.around(pair(r,*args),7))+' '+str(np.around(force(partial(pair),r,*args),7))+'\n')
+            rsqrt = math.sqrt(r)
+            file.write(str(n)+' '+str(r)+' '+str(np.around(pair(rsqrt,*args),7))+' '+str(np.around(force(partial(pair),rsqrt,*args),7))+'\n')
             
             #    file.write(str(n)+' '+str(r)+' '+str(0.0)+' '+str(0.0)+'\n')
             n+=1
@@ -82,7 +91,7 @@ def make_table_for_lammps(filename,pair_keyword,pair,rmin,rmax,N,rctab,*args):
 
 def pair_write_lammps(lmps_pair_write_generic_filename,lmps_input_filename,lmps_pair_filename,lmps_executing_command
                       ,pair_filename, pair_keyword
-                      ,units_string,rmin,rmax,N,Nlmps,rc,style='linear'):
+                      ,units_string,rmin,rmax,N,Nlmps,rc,style='linear',mode=0):
     lmpin = open(lmps_pair_write_generic_filename,'r')
     lmps_comms = lmpin.read()
     lmpin.close()
@@ -96,6 +105,10 @@ def pair_write_lammps(lmps_pair_write_generic_filename,lmps_input_filename,lmps_
     lmps_comms = lmps_comms.replace("PWPOINTS",str(Nlmps))
     lmps_comms = lmps_comms.replace("RMIN",str(rmin))
     lmps_comms = lmps_comms.replace("RMAX",str(rmax))
+    if mode==0 or mode==1:
+        lmps_comms = lmps_comms.replace("RMODE","r")
+    else:
+        lmps_comms = lmps_comms.replace("RMODE","rsq")
     lmps_comms = lmps_comms.replace("PWFIL",lmps_pair_filename)
 
     lmpout = open(lmps_input_filename,'w')
@@ -108,7 +121,7 @@ def pair_write_lammps(lmps_pair_write_generic_filename,lmps_input_filename,lmps_
     
 
 
-def comparison(filename_with_path,lmps_pair_filename,pair_filename,xmin,xmax,deltax,y1min,y1max,y2min,y2max,plot=True,markers=True):
+def comparison(filename_with_path,lmps_pair_filename,pair_filename,xmin,xmax,deltax,y1min,y1max,y2min,y2max,plot=True,markers=True,mode=0):
     
     lmpsdata = np.genfromtxt(lmps_pair_filename,skip_header=6)
     OGdata = np.genfromtxt(pair_filename,skip_header=5)
@@ -116,6 +129,9 @@ def comparison(filename_with_path,lmps_pair_filename,pair_filename,xmin,xmax,del
     rlmps = lmpsdata[:,1]
     rOG = OGdata[:,1]
 
+    if mode == 2:
+        rOG = np.sqrt(rOG)
+    
     pairlmps = lmpsdata[:,2]
     pairOG = OGdata[:,2]
     

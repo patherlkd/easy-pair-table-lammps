@@ -11,4 +11,4 @@ set	       type 1 mass 1
 pair_style table STYLE NPOINTS
 pair_coeff * * FILE KEYWORD RCUT
 
-pair_write 1 1 PWPOINTS r RMIN RMAX PWFIL KEYWORD
+pair_write 1 1 PWPOINTS RMODE RMIN RMAX PWFIL KEYWORD
