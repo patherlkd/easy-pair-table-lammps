@@ -15,7 +15,7 @@ This tool has been tested with style = linear and spline. This tool supports 'R'
 
 ## How to contribute?
 
-* If you have used this tool and want to add your potential, then send  the python code for such a potential along with the make_<your-potential>.py code and potential and force test plots to luke.davis@ucl.ac.uk. Then I will add it to the potentials_for_lammps.py. Please keep to the style of naming your pair potential function pair_<name>.
+* If you have used this tool and want to add your potential, then send  the python code for such a potential along with the make_your-potential.py code and potential and force test plots to luke.davis@ucl.ac.uk. Then I will add it to the potentials_for_lammps.py. Please keep to the style of naming your pair potential function pair_name.
 
 ## Dependencies:
 Linux, python3
