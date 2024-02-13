@@ -1,5 +1,5 @@
 ## Written by Dr. Luke Davis: UCL Department of Mathematics 2023 luke.davis@ucl.ac.uk
-##
+## Added pair_LJ_12_6_4 Jennifer Clark 02/08/2024
 ##
 #!/usr/bin/env python
 # coding: utf-8
@@ -26,6 +26,39 @@ def pair_LJ(r,eps,sigma,rc):
     # Impose a cutoff
     if r < rc:
         ene += 4.0*eps*((sigma/r)**12 - (sigma/r)**6)
+
+    # A pair function should only return the potential energy at r
+    return ene
+
+def pair_LJ_12_6_4(r,eps,rmin,c4,rc):
+    r""" Potential for LJ with additional $r^{-4}$ dependence.
+    
+    .. math::
+        U_{ij}(r_{ij}))=\epsilon_{ij}\left[ \left( \frac{R_{min,ij}}{r_{ij}} \right)^{12} -2\left( \frac{R_{min,ij}}{r_{ij}} \right)^{6} \right] - \frac{C_{4}^{ij}}{r_{ij}^4}
+
+    Parameters
+    ----------
+    r : float
+        Distance between two beads
+    eps : float
+        Interaction energy parameter
+    rmin : float
+        Distance of potential energy minimum
+    c4 : float
+        Dispersion coefficient
+    rc : float
+        Interaction cut-off distance
+
+    Returns
+    -------
+    ene
+        Energy of interaction
+    """
+    ene = 0.0
+
+    # Impose a cutoff
+    if r < rc:
+        ene += eps*((rmin/r)**12 - 2.0*(rmin/r)**6) - c4/r^4
 
     # A pair function should only return the potential energy at r
     return ene
@@ -95,9 +128,7 @@ def ELJcohesion(r, epc,sigma, rc):
     elif r <= rc:
             
         fbegin = force(partial(pair_LJ),rcrep,epc,sigma,rc)
-        fend = force(partial(pair_LJ),rc,epc,sigma,rc)
             
-        #return pair_LJ(r,epc,sigma,rc)-pair_LJ(rc,epc,sigma,rc) + (r-rc)*fend + (r-rcrep)*fbegin
         return pair_LJ(r,epc,sigma,rc)-pair_LJ(rc,epc,sigma,rc) + (r-rcrep)*fbegin
             
     else:
@@ -116,26 +147,23 @@ def ELJrepulsion(r, epr, epc, sigma, rc):
         return 0.0
 
 
-def pair_rep_coh(r,epr,epc,sigma,rc,rctab):
-
+def pair_rep_coh( r, epr, epc, sigma, rc):
     if r <= rc:
-        return ELJcohesion(r,epc, sigma, rc) + ELJrepulsion(r,epr, epc, sigma, rc)
+        return ELJcohesion( r, epc, sigma, rc) + ELJrepulsion( r, epr, epc, sigma, rc)
     else:
         return 0.0
-
 
 
 # Version which is shifted and continuous at the tabulated cut-off
-def pair_rep_coh_smooth_linear(r,epr,epc,sigma,rc,rctab):
+def pair_rep_coh_smooth_linear( r, epr, epc, sigma, rc, rctab):
     if r <= rc:
-        fend = force(partial(pair_rep_coh),rctab,epr,epc,sigma,rc,rctab)
-        return pair_rep_coh(r,epr,epc,sigma,rc,rctab) - pair_rep_coh(rctab,epr,epc,sigma,rc,rctab) + (r-rctab)*fend
+        fend = force(partial(pair_rep_coh), rctab, epr, epc, sigma, rc)
+        return pair_rep_coh( r, epr, epc, sigma, rc) - pair_rep_coh( rctab, epr, epc, sigma, rc) + (r-rctab)*fend
     else:
         return 0.0
-    
-            
+
 
 # Version which is smooth and scaled by a
-def pair_rep_coh_smooth_linear_scaled(r,a,epr,epc,sigma,rc,rctab):
-    return a*pair_rep_coh_smooth_linear(r,epr,epc,sigma,rc,rctab)
+def pair_rep_coh_smooth_linear_scaled(r, a, epr, epc, sigma, rc, rctab):
+    return a*pair_rep_coh_smooth_linear( r, epr, epc, sigma, rc, rctab)
     
