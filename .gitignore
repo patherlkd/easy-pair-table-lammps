@@ -1,0 +1,8 @@
+
+eptl/resources/lmp_executable
+examples/tables/
+__pycache__/
+*egg-info/
+*.pyc
+.DS_Store
+*.swp

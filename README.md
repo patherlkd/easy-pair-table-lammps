@@ -28,28 +28,28 @@ Linux, python3
 
 * matplotlib (with pdf backend - which it should come with automatically) https://matplotlib.org/
 
-* For the make_many_pairstyle_pair_rep_coh_smooth_linear_MPI.py example you need mpi4py https://mpi4py.readthedocs.io/en/stable/
+* For the example_pair_rep_coh_smooth_linear_MPI.ipynb example you need mpi4py https://mpi4py.readthedocs.io/en/stable/
 
 ### LAMMPS
 You need a lammps executable (you can specify the exact path to this in your make_pairstyle.py code (see the other make<...>.py examples)).
 
 ## Main steps
 
-1. Specify functional form of potential in potentials_for_lammps.py (see examples in there for guidance). Just requires the pair-wise distance r to be the first argument. You can add an arbitrary number of other arguments.
-2. Create a make_pairstyle.py code (copy and edit from make_pairstyle_example_WCA.py for example).
-3. Ensure the path to the lammps executable in the make_pairstyle.py code is correct for your system!
-4. Run the make_pairstyle code `python3 make_pairstyle.py`.
+1. Install the package with `pip install .`
+2. Ensure the path to the lammps executable is specified, the first time you run this code you'll receive instructions, or see the jupyter notebook in the examples directory.
+3. Specify functional form with a pair_keyword (if the potential is supported by eptl)
+ or specify a custom function and pass to `eptl.create_lammps_pairstyle_table.make_table_for_lammps` (see the jupyter notebook in the examples directory for guidance). Just requires the pair-wise distance r to be the first argument. You can add an arbitrary number of other arguments and keywords to be passed.
 5. Check plot (if plot=True is on) and/or the relative differences data to see if the potential will work - as expected - in lammps.
 6. Copy the pair_style table and pair_coeff commands from the generated pair_write lammps input script into your actual simulation input scripts.
 7. Run your simulations!
 
-### Look at the make_pairstyle_example_WCA.py
+### Look at the examples/example_WCA.ipynb
 
 This example code is basic and if you understand how it works you can then do what you want.
 
 ## You can get sophisticated!
 
-Note you can specify rather involved potentials, and aslong as you use numpy functions etc. the force can be gotten automatically. You can also look at make_many_pairstyle_pair_rep_coh_smooth_linear_MPI.py for a more involved example which computes many pair tables using the Message Passing Interface (MPI).
+Note you can specify rather involved potentials, and as long as you use numpy functions etc. the force can be gotten automatically. You can also look at example_pair_rep_coh_smooth_linear_MPI.ipynb for a more involved example which computes many pair tables using the Message Passing Interface (MPI).
 
 # Example WCA potential
 
