@@ -30,7 +30,7 @@ def pair_LJ(r,eps,sigma,rc):
     # A pair function should only return the potential energy at r
     return ene
 
-def pair_LJ_12_6_4(r,eps,rmin,c4,rc):
+def pair_LJ_12_6_4(r,eps,sigma,c4,rc):
     r""" Potential for LJ with additional $r^{-4}$ dependence.
     
     .. math::
@@ -42,7 +42,8 @@ def pair_LJ_12_6_4(r,eps,rmin,c4,rc):
         Distance between two beads
     eps : float
         Interaction energy parameter
-    rmin : float
+    sigma : float
+        Characteristic size parameter
         Distance of potential energy minimum
     c4 : float
         Dispersion coefficient
@@ -58,7 +59,7 @@ def pair_LJ_12_6_4(r,eps,rmin,c4,rc):
 
     # Impose a cutoff
     if r < rc:
-        ene += eps*((rmin/r)**12 - 2.0*(rmin/r)**6) - c4/r^4
+        ene += 4*eps*((sigma/r)**12 - (sigma/r)**6) - c4/r**4
 
     # A pair function should only return the potential energy at r
     return ene
