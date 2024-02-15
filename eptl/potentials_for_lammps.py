@@ -39,7 +39,7 @@ def pair_LJ_12_6_4( r, eps, sigma, c4, rc):
     r""" Potential for LJ with additional $r^{-4}$ dependence.
     
     .. math::
-        U_{ij}(r_{ij}))=\epsilon_{ij}\left[ \left( \frac{R_{min,ij}}{r_{ij}} \right)^{12} -2\left( \frac{R_{min,ij}}{r_{ij}} \right)^{6} \right] - \frac{C_{4}^{ij}}{r_{ij}^4}
+        U_{ij}(r_{ij}))=4\epsilon_{ij}\left[ \left( \frac{\sigma_{ij}}{r_{ij}} \right)^{12} -\left( \frac{\sigma_{ij}}{r_{ij}} \right)^{6} \right] - \frac{C_{4}^{ij}}{r_{ij}^4}
 
     Parameters
     ----------
@@ -69,6 +69,76 @@ def pair_LJ_12_6_4( r, eps, sigma, c4, rc):
     # A pair function should only return the potential energy at r
     return ene
 
+
+def pair_Mie( r, eps, sigma, lr, la, rc):
+    r""" Mie Potential: Generalized LJ with variable exponents
+    
+    .. math::
+        C_{ij} = \frac{l_r}{l_r-l_a}(\frac{l_r}{l_a})^(\frac{l_a}{l_r-l_a})
+        U_{ij}(r_{ij}))=C_{ij}\epsilon_{ij}\left[ \left( \frac{\sigma_{ij}}{r_{ij}} \right)^{l_r} -\left( \frac{\sigma_{ij}}{r_{ij}} \right)^{l_a} \right]
+
+    Parameters
+    ----------
+    r : float
+        Distance between two beads
+    eps : float
+        Interaction energy parameter
+    sigma : float
+        Characteristic size parameter
+        Distance of potential energy minimum
+    lr : float
+        Repulsive exponent
+    la : float
+        Attractive exponent
+    rc : float
+        Interaction cut-off distance
+
+    Returns
+    -------
+    ene
+        Energy of interaction
+    """
+    ene = 0.0
+    prefactor = lr / (lr - la) * ( lr / la )**( la / ( lr - la))
+
+    if r < rc:
+        ene += prefactor * eps * ( (sigma/r)**lr - (sigma/r)**la )
+
+    return ene
+
+def pair_CSW( r, lam, m, n, rc):
+    r""" Continuous Square-Well (CSW)
+    
+    DOI: 10.1080/00268976.2018.1481232
+    
+    .. math::
+        U_{ij}(r_{ij}))=\frac{1}}{2} \left[ \left( \frac{1}{r_{ij}} \right)^{n} + \frac{1-\exp{-m(r_{ij}-1)(r_{ij}-lam)}}{1+\exp{-m(r_{ij}-1)(r_{ij}-lam)}} - 1 \right]
+
+    Parameters
+    ----------
+    r : float
+        Distance between two beads
+    lam : float
+        Potential range, characteristic size
+    m : float
+        Softness of attractive contribution
+    n : float
+        Softness of repulsive contribution
+    rc : float
+        Interaction cut-off distance
+
+    Returns
+    -------
+    ene
+        Energy of interaction
+    """
+    ene = 0.0
+
+    exp = np.exp(-m*(r-1)*(r-lam))
+    if r < rc:
+        ene += ( (1/r)**n + (1-exp)/(1+exp) - 1) / 2
+
+    return ene
 
 # Example WCA  potential
 def pair_WCA(r,eps,sigma,rc):
