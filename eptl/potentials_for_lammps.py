@@ -1,9 +1,14 @@
+""" This module contains pair interaction potential functions. To call one
+of these functions with the ``pair_keyword``, use a str with the entire function
+name or the function name sans the prefix, "pair_".
+
+Notice that the last argument in all functions is the cutoff radius, ``rc``. Since this
+cutoff radius is used exclusively, a consistent placement for this argument is required 
+for the ``shift`` feature in :func:`eptl.create_lammps_pairstyle_table.make_table_for_lammps`
+"""
+
 ## Written by Dr. Luke Davis: UCL Department of Mathematics 2023 luke.davis@ucl.ac.uk
 ## Added pair_LJ_12_6_4 Jennifer Clark 02/08/2024
-##
-#!/usr/bin/env python
-# coding: utf-8
-
 
 import autograd.numpy as np # numerical python library
 import math # python math library
@@ -30,7 +35,7 @@ def pair_LJ(r,eps,sigma,rc):
     # A pair function should only return the potential energy at r
     return ene
 
-def pair_LJ_12_6_4(r,eps,sigma,c4,rc):
+def pair_LJ_12_6_4( r, eps, sigma, c4, rc):
     r""" Potential for LJ with additional $r^{-4}$ dependence.
     
     .. math::
