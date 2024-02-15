@@ -1,8 +1,8 @@
+""" Module of functions to create tables, run LAMMPS test, and generate comparisons.
+"""
+
 ## Written by Dr. Luke Davis: UCL Department of Mathematics 2023 luke.davis@ucl.ac.uk
-##
-##
-#!/usr/bin/env python
-# coding: utf-8
+## Added class LmpExec, refactored functions to follow PEP8 standards Jennifer Clark 02/08/2024
 
 import os
 import math
@@ -104,7 +104,10 @@ def set_plot_rcparams(ff=3, fig_width_pt=246., inches_per_pt=0.014, golden_mean=
     params.update(rcparams)
     plt.rcParams.update(params)
 
-def make_table_for_lammps(table_filename, pair_keyword, rmin=0.5, rmax=15, N=2000, pair=None, args=(), kwargs={}, mode=0, prec=7):
+def make_table_for_lammps(
+    table_filename, pair_keyword, rmin=0.5, rmax=15, N=2000, pair=None, args=(), 
+    kwargs={}, mode=0, prec=7, shift=False, rc=None
+):
     """ Write table with lammps potential
 
     Parameters
@@ -139,6 +142,11 @@ def make_table_for_lammps(table_filename, pair_keyword, rmin=0.5, rmax=15, N=200
         
     prec : int, default=7
         Default number of decimal places for output table
+    shift : bool, default=False
+        Shift potential to be zero at the cutoff. If ``rc is None`` then assumed to be ``rmax``
+        Note that shifting the potential does not remove a discontinuity from the force.
+    rc : float, default=None
+        Cutoff value to set potential equal to zero.
         
     """
     
@@ -161,6 +169,16 @@ def make_table_for_lammps(table_filename, pair_keyword, rmin=0.5, rmax=15, N=200
         r = rmin
         rdelta = ( rmax - rmin ) / N
 
+    if shift:
+        tmp_args = list(args)
+        tmp_args[-1] = np.inf
+        if rc is None:
+            offset = -np.around( pair( rmax, *tmp_args, **kwargs), prec)
+        else:
+            offset = -np.around( pair( rc, *tmp_args, **kwargs), prec)
+    else:
+        offset = 0.0
+
     # Write file
     with open(table_filename,'w') as file:
         
@@ -177,8 +195,11 @@ def make_table_for_lammps(table_filename, pair_keyword, rmin=0.5, rmax=15, N=200
         # Write Content    
         for n in range(1, N+1):
             rsqrt = math.sqrt(r) if mode == 2 else r
+            pot = np.around( pair( rsqrt, *args, **kwargs), prec)
+            if not np.isclose(pot, 0.0, 1e-12):
+                pot += offset
             file.write(f"{n} {r} "+"{} {}\n".format(
-                np.around( pair( rsqrt, *args, **kwargs), prec), 
+                pot, 
                 np.around( force( partial(pair), rsqrt, *args, **kwargs), prec)
                 ))
             r += rdelta
@@ -412,12 +433,14 @@ def comparison(
         # Pair
         axs[0].plot( rOG, pairOG, **plot_kwargs2)
         axs[0].plot( rlmps, pairlmps, **plot_kwargs1)
+        axs[0].plot( [0, rOG[-1]], [0, 0], "k", linewidth=0.5, label=None)
         axs[0].set( xlabel="r", ylabel="Pair potential energy (r)")
         #axs[0].legend( loc='best', fontsize=12, markerscale=2.0, frameon=False)
         
         # force
         axs[1].plot( rOG, forceOG, **plot_kwargs2)
         axs[1].plot( rlmps, forcelmps, **plot_kwargs1)
+        axs[1].plot( [0, rOG[-1]], [0, 0], "k", linewidth=0.5, label=None)
         axs[1].set(xlabel="r",ylabel="Force (r)")
         axs[1].legend(loc='best', fontsize=12, markerscale=2.0, frameon=False)
             
